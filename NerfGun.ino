@@ -11,6 +11,12 @@ const uint8_t SOLENOID_PIN = 5;
 const int MOTOR_DUTY_MIN = 1000;
 const int MOTOR_DUTY_MAX = 2000;
 
+
+const int SolenoidFireMS = 100; // how long the solenoid is fired to send a shot
+const int SolenoidResetMS = 150; // how long the solenoid waits after firing before it can fire again
+const int ButtonDebounceMS = 50; // how long to ignore inputs afer it changes
+const int Motor_Wait_Speed = 1100; // the speed to hold the motor at while in Spin_Wait
+
 // defines a collection of timings for the various motor modes
 struct MotorSettingsStruct{
 	int MotorRampUpMS; // how long the motor will need to ramp up to speed before the solenoid can be engaged
@@ -37,6 +43,10 @@ class ShotTimings{
 			MotorEndTime = now + motorSettings.MotorRampUpMS + motorSettings.MotorFireMS;
 		}
 	}
+
+	ShotTimings(){
+		SolenoidStartTime = SolenoidEndTime = SolenoidResetTime = MotorEndTime = 0;
+	}
 };
 
 // these values need to be tuned to match the hardware
@@ -54,13 +64,6 @@ MotorSettingsStruct PerformanceMotorSettings = {
 	0,
 	200
 };
-
-const int SolenoidFireMS = 100; // how long the solenoid is fired to send a shot
-const int SolenoidResetMS = 150; // how long the solenoid waits after firing before it can fire again
-
-const int ButtonDebounceMS = 50; // how long to ignore inputs afer it changes
-
-const int Motor_Wait_Speed = 1100; // the speed to hold the motor at while in Spin_Wait
 
 enum ShotStateEnum{
 	Ready, // everything is ready to fire
